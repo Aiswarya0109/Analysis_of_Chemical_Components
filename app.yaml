@@ -1,0 +1,10 @@
+runtime: python313
+
+handlers:
+- url: /
+  static_files: cosmetic_map.html
+  upload: cosmetic_map.html
+
+- url: /(.*)
+  static_files: \1
+  upload: .*
