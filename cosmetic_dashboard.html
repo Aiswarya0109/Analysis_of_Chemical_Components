@@ -599,7 +599,7 @@ const REC_DATA = {"recommendations": [[{"Name": "Crme de la Mer Mini", "Brand": 
 let selectedConcerns = new Set();
 let maxBudget = 100;
 
-Chart.defaults.color = '#8060a0';
+setTimeout(function() { try {
 Chart.defaults.borderColor = 'rgba(201,160,220,0.08)';
 Chart.defaults.font.size = 10;
 
@@ -724,6 +724,7 @@ function searchProducts(query){
   const matches=PRODUCTS.map((p,i)=>Object.assign({},p,{idx:i})).filter(p=>p.Name.toLowerCase().includes(query.toLowerCase())).slice(0,5);
   dd.innerHTML=matches.map(p=>'<div onclick="selectProductForDupe('+p.idx+',this)" style="padding:7px 9px;background:#130d1a;border:1px solid rgba(201,160,220,0.1);border-radius:6px;cursor:pointer;font-size:11px;color:#f0e0ff;" onmouseover="this.style.borderColor='#c9a0dc'" onmouseout="this.style.borderColor='rgba(201,160,220,0.1)'"><div style="font-weight:600;">'+(p.Name.length>42?p.Name.slice(0,42)+'...':p.Name)+'</div><div style="font-size:10px;color:#8060a0;">'+p.Brand+' - $'+p.Price+'</div></div>').join('');
 }
+} catch(e){ console.log(e); } }, 500);
 function selectProductForDupe(idx){
   document.getElementById('productDropdown').innerHTML='';
   const recs=REC_DATA.recommendations[idx];
