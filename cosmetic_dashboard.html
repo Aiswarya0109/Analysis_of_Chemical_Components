@@ -236,6 +236,86 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
 
 </div>
 
+
+<div class="sec" style="background:#130d1a;">
+  <div class="sh"><span style="color:#f4c2ce;">// BUDGET FINDER</span><div style="background:rgba(244,194,206,0.1);"></div></div>
+  <div style="font-size:11px;color:#8060a0;margin-bottom:20px;">Find the best products within your budget ranked by beneficial ingredients</div>
+  
+  <div style="display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:start;">
+    
+    <!-- Controls -->
+    <div class="cd">
+      <div class="ct">Set Your Budget</div>
+      <div style="font-size:28px;font-weight:700;color:#f4c2ce;font-family:Space Mono,monospace;text-align:center;margin:16px 0;" id="bfAmount">$50</div>
+      <input type="range" id="bfSlider" min="10" max="300" value="50" step="5" oninput="updateBF(this)"
+        style="width:100%;margin-bottom:8px;background:linear-gradient(to right,#f4c2ce 0%,#f4c2ce 14%,#261530 14%);">
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:#8060a0;margin-bottom:16px;">
+        <span>$10</span><span>$300</span>
+      </div>
+      <div style="font-size:10px;color:#8060a0;margin-bottom:8px;">SKIN CONCERN</div>
+      <div id="bfConcerns" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;">
+        <div class="rc" onclick="togBF(this,'dryness')">Dryness</div>
+        <div class="rc" onclick="togBF(this,'aging')">Aging</div>
+        <div class="rc" onclick="togBF(this,'oily')">Oily</div>
+        <div class="rc" onclick="togBF(this,'sensitive')">Sensitive</div>
+        <div class="rc" onclick="togBF(this,'brightening')">Brightening</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:rgba(244,194,206,0.08);border-radius:8px;">
+        <div style="font-size:11px;color:#8060a0;">Products in budget</div>
+        <div style="font-size:24px;font-weight:700;color:#f4c2ce;font-family:Space Mono,monospace;" id="bfCount">0</div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;" id="bfResults">
+        <div style="color:#8060a0;font-size:11px;text-align:center;padding:40px;grid-column:1/-1;">Move the slider to find products!</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="sec" style="background:#130d1a;">
+  <div class="sh"><span style="color:#f4c2ce;">// BUDGET FINDER</span><div style="background:rgba(244,194,206,0.1);"></div></div>
+  <div style="font-size:11px;color:#8060a0;margin-bottom:20px;">Find the best products within your budget ranked by beneficial ingredients</div>
+  
+  <div style="display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:start;">
+    
+    <!-- Controls -->
+    <div class="cd">
+      <div class="ct">Set Your Budget</div>
+      <div style="font-size:28px;font-weight:700;color:#f4c2ce;font-family:Space Mono,monospace;text-align:center;margin:16px 0;" id="bfAmount">$50</div>
+      <input type="range" id="bfSlider" min="10" max="300" value="50" step="5" oninput="updateBF(this)"
+        style="width:100%;margin-bottom:8px;background:linear-gradient(to right,#f4c2ce 0%,#f4c2ce 14%,#261530 14%);">
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:#8060a0;margin-bottom:16px;">
+        <span>$10</span><span>$300</span>
+      </div>
+      <div style="font-size:10px;color:#8060a0;margin-bottom:8px;">SKIN CONCERN</div>
+      <div id="bfConcerns" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;">
+        <div class="rc" onclick="togBF(this,'dryness')">Dryness</div>
+        <div class="rc" onclick="togBF(this,'aging')">Aging</div>
+        <div class="rc" onclick="togBF(this,'oily')">Oily</div>
+        <div class="rc" onclick="togBF(this,'sensitive')">Sensitive</div>
+        <div class="rc" onclick="togBF(this,'brightening')">Brightening</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:rgba(244,194,206,0.08);border-radius:8px;">
+        <div style="font-size:11px;color:#8060a0;">Products in budget</div>
+        <div style="font-size:24px;font-weight:700;color:#f4c2ce;font-family:Space Mono,monospace;" id="bfCount">0</div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;" id="bfResults">
+        <div style="color:#8060a0;font-size:11px;text-align:center;padding:40px;grid-column:1/-1;">Move the slider to find products!</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <div class="sec" style="background:#1e1228;">
   <div class="sh"><span style="color:#f4c2ce;">// RECOMMENDATION ENGINE</span><div style="background:rgba(244,194,206,0.1);"></div></div>
   <div class="g2">
@@ -703,6 +783,170 @@ function renderComparison() {
     }
   }
 }
+</script>
+
+<script>
+var bfConcerns = {};
+
+function updateBF(el) {
+  var val = parseInt(el.value);
+  var pct = (val-10)/290*100;
+  el.style.background = "linear-gradient(to right,#f4c2ce 0%,#f4c2ce "+pct+"%,#261530 "+pct+"%)";
+  document.getElementById("bfAmount").textContent = "$"+val;
+  renderBF(val);
+}
+
+function togBF(el, c) {
+  if(bfConcerns[c]) { delete bfConcerns[c]; el.classList.remove("on"); }
+  else { bfConcerns[c] = 1; el.classList.add("on"); }
+  var val = parseInt(document.getElementById("bfSlider").value);
+  renderBF(val);
+}
+
+function renderBF(budget) {
+  var concern_ings = {
+    dryness: ["glycerin","hyaluronic acid","squalane","ceramide"],
+    aging: ["retinol","peptide","collagen","niacinamide","vitamin c"],
+    oily: ["salicylic acid","zinc","niacinamide"],
+    sensitive: ["aloe","ceramide","oat","allantoin"],
+    brightening: ["vitamin c","niacinamide","glycolic"]
+  };
+  
+  var ti = [];
+  var cs = Object.keys(bfConcerns);
+  for(var i=0;i<cs.length;i++) {
+    var ings = concern_ings[cs[i]];
+    if(ings) for(var j=0;j<ings.length;j++) ti.push(ings[j]);
+  }
+  
+  var filtered = P.filter(function(p){ return p.Price <= budget; });
+  document.getElementById("bfCount").textContent = filtered.length;
+  
+  var scored = filtered.map(function(p) {
+    var il = p.Ingredients.toLowerCase();
+    var s = 0;
+    for(var i=0;i<ti.length;i++) { if(il.indexOf(ti[i])>=0) s++; }
+    return {p:p, s:s};
+  });
+  
+  if(ti.length > 0) {
+    scored.sort(function(a,b){ return b.s-a.s||b.p.Rank-a.p.Rank; });
+  } else {
+    scored.sort(function(a,b){ return b.p.Rank-a.p.Rank; });
+  }
+  
+  scored = scored.slice(0,6);
+  
+  if(scored.length === 0) {
+    document.getElementById("bfResults").innerHTML = "<div style=\"color:#8060a0;font-size:11px;text-align:center;padding:40px;grid-column:1/-1;\">No products found under $"+budget+"</div>";
+    return;
+  }
+  
+  var html = "";
+  for(var i=0;i<scored.length;i++) {
+    var item = scored[i];
+    var stars = "";
+    for(var j=0;j<5;j++) {
+      stars += "<span style=\"color:"+(j<Math.round(item.p.Rank)?"#f4c2ce":"#261530")+";\">&#9733;</span>";
+    }
+    html += "<div style=\"background:var(--bg3);border:1px solid rgba(244,194,206,0.15);border-radius:10px;padding:14px;position:relative;\">";
+    html += "<div style=\"position:absolute;top:10px;right:10px;font-family:Space Mono,monospace;font-size:14px;font-weight:700;color:#f4c2ce;\">#"+(i+1)+"</div>";
+    html += "<div style=\"font-size:9px;color:#f4c2ce;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;\">"+item.p.Brand+"</div>";
+    html += "<div style=\"font-size:12px;font-weight:700;color:#f0e0ff;margin-bottom:6px;line-height:1.3;\">"+(item.p.Name.length>40?item.p.Name.slice(0,40)+"...":item.p.Name)+"</div>";
+    html += "<div style=\"font-size:11px;color:#f4c2ce;font-family:Space Mono,monospace;margin-bottom:6px;\">"+"$"+item.p.Price+"</div>";
+    html += "<div style=\"margin-bottom:8px;\">"+stars+"</div>";
+    if(ti.length > 0 && item.s > 0) {
+      html += "<div style=\"font-size:9px;color:#8060a0;\">"+item.s+" ingredient matches</div>";
+    }
+    html += "</div>";
+  }
+  document.getElementById("bfResults").innerHTML = html;
+}
+
+// Initialize
+renderBF(50);
+</script>
+
+<script>
+var bfConcerns = {};
+
+function updateBF(el) {
+  var val = parseInt(el.value);
+  var pct = (val-10)/290*100;
+  el.style.background = "linear-gradient(to right,#f4c2ce 0%,#f4c2ce "+pct+"%,#261530 "+pct+"%)";
+  document.getElementById("bfAmount").textContent = "$"+val;
+  renderBF(val);
+}
+
+function togBF(el, c) {
+  if(bfConcerns[c]) { delete bfConcerns[c]; el.classList.remove("on"); }
+  else { bfConcerns[c] = 1; el.classList.add("on"); }
+  var val = parseInt(document.getElementById("bfSlider").value);
+  renderBF(val);
+}
+
+function renderBF(budget) {
+  var concern_ings = {
+    dryness: ["glycerin","hyaluronic acid","squalane","ceramide"],
+    aging: ["retinol","peptide","collagen","niacinamide","vitamin c"],
+    oily: ["salicylic acid","zinc","niacinamide"],
+    sensitive: ["aloe","ceramide","oat","allantoin"],
+    brightening: ["vitamin c","niacinamide","glycolic"]
+  };
+  
+  var ti = [];
+  var cs = Object.keys(bfConcerns);
+  for(var i=0;i<cs.length;i++) {
+    var ings = concern_ings[cs[i]];
+    if(ings) for(var j=0;j<ings.length;j++) ti.push(ings[j]);
+  }
+  
+  var filtered = P.filter(function(p){ return p.Price <= budget; });
+  document.getElementById("bfCount").textContent = filtered.length;
+  
+  var scored = filtered.map(function(p) {
+    var il = p.Ingredients.toLowerCase();
+    var s = 0;
+    for(var i=0;i<ti.length;i++) { if(il.indexOf(ti[i])>=0) s++; }
+    return {p:p, s:s};
+  });
+  
+  if(ti.length > 0) {
+    scored.sort(function(a,b){ return b.s-a.s||b.p.Rank-a.p.Rank; });
+  } else {
+    scored.sort(function(a,b){ return b.p.Rank-a.p.Rank; });
+  }
+  
+  scored = scored.slice(0,6);
+  
+  if(scored.length === 0) {
+    document.getElementById("bfResults").innerHTML = "<div style=\"color:#8060a0;font-size:11px;text-align:center;padding:40px;grid-column:1/-1;\">No products found under $"+budget+"</div>";
+    return;
+  }
+  
+  var html = "";
+  for(var i=0;i<scored.length;i++) {
+    var item = scored[i];
+    var stars = "";
+    for(var j=0;j<5;j++) {
+      stars += "<span style=\"color:"+(j<Math.round(item.p.Rank)?"#f4c2ce":"#261530")+";\">&#9733;</span>";
+    }
+    html += "<div style=\"background:var(--bg3);border:1px solid rgba(244,194,206,0.15);border-radius:10px;padding:14px;position:relative;\">";
+    html += "<div style=\"position:absolute;top:10px;right:10px;font-family:Space Mono,monospace;font-size:14px;font-weight:700;color:#f4c2ce;\">#"+(i+1)+"</div>";
+    html += "<div style=\"font-size:9px;color:#f4c2ce;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;\">"+item.p.Brand+"</div>";
+    html += "<div style=\"font-size:12px;font-weight:700;color:#f0e0ff;margin-bottom:6px;line-height:1.3;\">"+(item.p.Name.length>40?item.p.Name.slice(0,40)+"...":item.p.Name)+"</div>";
+    html += "<div style=\"font-size:11px;color:#f4c2ce;font-family:Space Mono,monospace;margin-bottom:6px;\">"+"$"+item.p.Price+"</div>";
+    html += "<div style=\"margin-bottom:8px;\">"+stars+"</div>";
+    if(ti.length > 0 && item.s > 0) {
+      html += "<div style=\"font-size:9px;color:#8060a0;\">"+item.s+" ingredient matches</div>";
+    }
+    html += "</div>";
+  }
+  document.getElementById("bfResults").innerHTML = html;
+}
+
+// Initialize
+renderBF(50);
 </script>
 </body>
 </html>
