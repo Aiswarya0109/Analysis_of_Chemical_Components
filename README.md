@@ -36,7 +36,3 @@ An interactive data analytics dashboard that analyzes 1,472 Sephora cosmetic pro
 3. Products close together on the map share similar ingredients
 4. Cosine similarity is used to find ingredient-based product recommendations
 
-## Author
-Aiswarya - Data Analytics Portfolio Project
-- LinkedIn: https://www.linkedin.com/in/aiswarya-
-- GitHub: https://github.com/Aiswarya0109
