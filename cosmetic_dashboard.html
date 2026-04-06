@@ -114,12 +114,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
     <div class="fs">
       <div class="fl">Skin Type</div>
       <div class="fc" id="skinChips">
-        <div class="chip on" onclick="sk(this,'all')">All</div>
-        <div class="chip" onclick="sk(this,'Dry')">Dry</div>
-        <div class="chip" onclick="sk(this,'Normal')">Normal</div>
-        <div class="chip" onclick="sk(this,'Oily')">Oily</div>
-        <div class="chip" onclick="sk(this,'Combination')">Combo</div>
-        <div class="chip" onclick="sk(this,'Sensitive')">Sensitive</div>
+        <div class="chip on" onclick="sk(this,'all')">All <span style='background:rgba(201,160,220,0.2);border-radius:10px;padding:1px 6px;font-size:9px;margin-left:3px;'>190</span></div>
+        <div class="chip" onclick="sk(this,'Dry')">Dry <span style='background:rgba(201,160,220,0.2);border-radius:10px;padding:1px 6px;font-size:9px;margin-left:3px;'>190</span></div>
+        <div class="chip" onclick="sk(this,'Normal')">Normal <span style='background:rgba(201,160,220,0.2);border-radius:10px;padding:1px 6px;font-size:9px;margin-left:3px;'>182</span></div>
+        <div class="chip" onclick="sk(this,'Oily')">Oily <span style='background:rgba(201,160,220,0.2);border-radius:10px;padding:1px 6px;font-size:9px;margin-left:3px;'>154</span></div>
+        <div class="chip" onclick="sk(this,'Combination')">Combo <span style='background:rgba(201,160,220,0.2);border-radius:10px;padding:1px 6px;font-size:9px;margin-left:3px;'>174</span></div>
+        <div class="chip" onclick="sk(this,'Sensitive')">Sensitive <span style='background:rgba(201,160,220,0.2);border-radius:10px;padding:1px 6px;font-size:9px;margin-left:3px;'>150</span></div>
       </div>
     </div>
     <div class="fs">
@@ -197,6 +197,45 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
     </div>
   </div>
 </div>
+
+<div class="sec" style="background:#130d1a;">
+  <div class="sh"><span style="color:#c9a0dc;">// INGREDIENT COMPARISON</span><div></div></div>
+  <div style="margin-bottom:16px;font-size:11px;color:#8060a0;">Click any dot on the map to select Product 1, then click another for Product 2</div>
+  <div style="display:grid;grid-template-columns:1fr 80px 1fr;gap:16px;align-items:start;">
+    
+    <!-- Product 1 -->
+    <div class="cd">
+      <div class="ct">Product 1</div>
+      <div id="cp1" style="min-height:60px;">
+        <div style="color:#8060a0;font-size:11px;text-align:center;padding:20px;">Click a dot on the map</div>
+      </div>
+    </div>
+
+    <!-- VS -->
+    <div style="display:flex;align-items:center;justify-content:center;padding-top:40px;">
+      <div style="font-family:Cormorant Garamond,serif;font-size:32px;color:#c9a0dc;font-weight:700;">VS</div>
+    </div>
+
+    <!-- Product 2 -->
+    <div class="cd">
+      <div class="ct">Product 2</div>
+      <div id="cp2" style="min-height:60px;">
+        <div style="color:#8060a0;font-size:11px;text-align:center;padding:20px;">Click another dot on the map</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Shared ingredients -->
+  <div id="cshared" style="display:none;margin-top:20px;">
+    <div class="cd">
+      <div class="ct" style="color:#c9a0dc;">Shared Ingredients</div>
+      <div id="csharedList" style="display:flex;flex-wrap:wrap;gap:5px;"></div>
+    </div>
+  </div>
+
+</div>
+
 <div class="sec" style="background:#1e1228;">
   <div class="sh"><span style="color:#f4c2ce;">// RECOMMENDATION ENGINE</span><div style="background:rgba(244,194,206,0.1);"></div></div>
   <div class="g2">
@@ -437,7 +476,7 @@ function mm(e){
 }
 
 function mc(){
-  if(hi>=0){ST.sel=hi;showD(P[hi],hi);draw();}
+  if(hi>=0){ST.sel=hi;showD(P[hi],hi);draw();updateComparison(hi);}
 }
 
 function showD(p,idx){
@@ -584,6 +623,85 @@ function sdd(idx){
     html+='<div style="padding:7px;background:#130d1a;border:1px solid rgba(201,160,220,0.1);border-radius:6px;display:flex;align-items:center;gap:7px;margin-bottom:4px;"><div style="flex:1;"><div style="font-size:11px;color:#f0e0ff;font-weight:600;">'+(rs[i].Name.length>36?rs[i].Name.slice(0,36)+"...":rs[i].Name)+'</div><div style="font-size:9px;color:#8060a0;">'+rs[i].Brand+' - $'+rs[i].Price+'</div></div><div style="text-align:center;"><div style="font-size:12px;font-weight:700;color:'+(rs[i].similarity>50?"#c9a0dc":"#e8d0f5")+'">'+rs[i].similarity+'%</div><div style="font-size:8px;color:#8060a0;">match</div></div></div>';
   }
   document.getElementById("dr").innerHTML=html;
+}
+</script>
+
+<script>
+var compSel = [];
+
+function updateComparison(idx) {
+  if(compSel.length === 0) {
+    compSel.push(idx);
+  } else if(compSel.length === 1) {
+    if(compSel[0] === idx) return;
+    compSel.push(idx);
+  } else {
+    compSel = [idx];
+  }
+  renderComparison();
+}
+
+function renderComparison() {
+  var p1card = document.getElementById("cp1");
+  var p2card = document.getElementById("cp2");
+  var sharedDiv = document.getElementById("cshared");
+  var sharedList = document.getElementById("csharedList");
+
+  if(compSel.length >= 1) {
+    var p = P[compSel[0]];
+    var ings = p.Ingredients.split(",").map(function(s){return s.trim();});
+    p1card.innerHTML = '<div style="font-size:13px;font-weight:700;color:#f0e0ff;margin-bottom:3px;">'+p.Name+'</div>' +
+      '<div style="font-size:10px;color:#c9a0dc;margin-bottom:10px;">'+p.Brand+' - $'+p.Price+'</div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:4px;" id="ing1Tags"></div>';
+    var ing1set = new Set(ings.map(function(i){return i.toLowerCase();}));
+    
+    if(compSel.length === 2) {
+      var p2 = P[compSel[1]];
+      var ings2 = p2.Ingredients.split(",").map(function(s){return s.trim();});
+      var ing2set = new Set(ings2.map(function(i){return i.toLowerCase();}));
+      
+      // Render product 1 tags
+      var t1 = "";
+      ings.slice(0,20).forEach(function(ing) {
+        var isShared = ing2set.has(ing.toLowerCase());
+        t1 += '<span style="padding:2px 7px;border-radius:4px;font-size:9px;background:'+(isShared?"rgba(201,160,220,0.2)":"rgba(255,255,255,0.05)")+';border:1px solid '+(isShared?"#c9a0dc":"rgba(255,255,255,0.1)")+';color:'+(isShared?"#c9a0dc":"#8060a0")+';">'+ing+'</span>';
+      });
+      document.getElementById("ing1Tags").innerHTML = t1;
+      
+      // Render product 2
+      p2card.innerHTML = '<div style="font-size:13px;font-weight:700;color:#f0e0ff;margin-bottom:3px;">'+p2.Name+'</div>' +
+        '<div style="font-size:10px;color:#c9a0dc;margin-bottom:10px;">'+p2.Brand+' - $'+p2.Price+'</div>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:4px;"></div>';
+      var t2 = "";
+      ings2.slice(0,20).forEach(function(ing) {
+        var isShared = ing1set.has(ing.toLowerCase());
+        t2 += '<span style="padding:2px 7px;border-radius:4px;font-size:9px;background:'+(isShared?"rgba(201,160,220,0.2)":"rgba(255,255,255,0.05)")+';border:1px solid '+(isShared?"#c9a0dc":"rgba(255,255,255,0.1)")+';color:'+(isShared?"#c9a0dc":"#8060a0")+';">'+ing+'</span>';
+      });
+      p2card.querySelector("div:last-child").innerHTML = t2;
+      
+      // Shared ingredients
+      var shared = ings.filter(function(ing){return ing2set.has(ing.toLowerCase());});
+      if(shared.length > 0) {
+        sharedDiv.style.display = "block";
+        sharedList.innerHTML = shared.map(function(ing){
+          return '<span style="padding:3px 10px;border-radius:20px;font-size:10px;background:rgba(201,160,220,0.15);border:1px solid #c9a0dc;color:#c9a0dc;">'+ing+'</span>';
+        }).join("");
+      }
+
+      // Similarity score
+      var similarity = Math.round(shared.length / Math.min(ings.length, ings2.length) * 100);
+      sharedList.innerHTML += '<div style="width:100%;margin-top:12px;font-size:11px;color:#8060a0;">'+shared.length+' shared ingredients - <span style="color:#c9a0dc;">'+similarity+'% similarity</span></div>';
+      
+    } else {
+      // Only 1 selected
+      var t1 = "";
+      ings.slice(0,20).forEach(function(ing){
+        t1 += '<span style="padding:2px 7px;border-radius:4px;font-size:9px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#8060a0;">'+ing+'</span>';
+      });
+      document.getElementById("ing1Tags").innerHTML = t1;
+      sharedDiv.style.display = "none";
+    }
+  }
 }
 </script>
 </body>
