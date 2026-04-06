@@ -96,15 +96,7 @@ section.s{position:relative;z-index:1;padding:24px 28px 36px;border-top:1px soli
 </head>
 <body>
 
-<div id="ls" style="position:fixed;inset:0;background:#130d1a;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-  <div style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:700;color:#c9a0dc;letter-spacing:3px;margin-bottom:6px;">Chemical Analytic Lab</div>
-  <div style="font-family:'Space Mono',monospace;font-size:10px;color:#8060a0;letter-spacing:3px;margin-bottom:36px;">INGREDIENT INTELLIGENCE DASHBOARD</div>
-  <div style="display:flex;gap:8px;">
-    <div style="width:8px;height:8px;border-radius:50%;background:#c9a0dc;animation:pulse 1.2s infinite;"></div>
-    <div style="width:8px;height:8px;border-radius:50%;background:#e8d0f5;animation:pulse 1.2s infinite 0.2s;"></div>
-    <div style="width:8px;height:8px;border-radius:50%;background:#f4c2ce;animation:pulse 1.2s infinite 0.4s;"></div>
-  </div>
-</div>
+
 
 <canvas id="spark" style="position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.4;"></canvas>
 
@@ -307,7 +299,7 @@ let ST={s:'',sk:'all',mp:500,cm:'brand',sb:new Set(),vm:'s',sel:-1,z:1,px:0,py:0
 let FI=[],BCM={},cv,cx,hi=-1,sc=[],mc=new Set();
 
 window.addEventListener('load',function(){
-  setTimeout(function(){var ls=document.getElementById('ls');ls.style.transition='opacity 0.8s';ls.style.opacity='0';setTimeout(function(){ls.style.display='none';},800);},2000);
+  
   cv=document.getElementById('sc');cx=cv.getContext('2d');
   resize();window.addEventListener('resize',resize);
   cv.addEventListener('mousemove',mmov);cv.addEventListener('click',mclk);
