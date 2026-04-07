@@ -1,4 +1,4 @@
-# Chemical Analytic Lab - Cosmetic Ingredient Analysis Dashboard
+# GlowGuide - Cosmetic Recommendation System using Ingredient Analysis
 
 ## Live Demo
 https://aiswarya0109.github.io/Analysis_of_Chemical_Components/cosmetic_dashboard.html
