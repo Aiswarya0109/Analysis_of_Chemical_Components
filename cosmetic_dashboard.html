@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chemical Analytic Lab</title>
+<title>GlowGuide</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Cormorant+Garamond:wght@400;700&family=Jost:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
@@ -94,11 +94,53 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
 </style>
 </head>
 <body>
+
+<div style="position:relative;z-index:1;background:linear-gradient(135deg,#1e1228 0%,#130d1a 100%);padding:40px 40px 32px;border-bottom:1px solid rgba(201,160,220,0.2);">
+  <div style="max-width:900px;margin:0 auto;text-align:center;">
+    
+    <div style="font-family:Cormorant Garamond,serif;font-size:38px;font-weight:700;color:#f0e0ff;line-height:1.2;margin-bottom:12px;">GlowGuide<br><span style="font-size:22px;color:#c9a0dc;">Ingredient-Based Skincare Recommender</span></div>
+    <div style="font-size:15px;color:#8060a0;margin-bottom:24px;line-height:1.6;">Ingredient-Based Skincare Recommender built using Python, Pandas, Scikit-learn, t-SNE and Chart.js.<br>Similarity between products is computed using ingredient-based vector representations.<br>Reduces trial-and-error buying especially for people with sensitive or dry skin.</div>
+    <div style="display:flex;justify-content:center;gap:32px;margin-bottom:28px;flex-wrap:wrap;">
+      <div style="text-align:center;"><div style="font-family:Space Mono,monospace;font-size:26px;font-weight:700;color:#c9a0dc;">1,472</div><div style="font-size:10px;color:#8060a0;letter-spacing:1px;text-transform:uppercase;">Products Analyzed</div></div>
+      <div style="text-align:center;"><div style="font-family:Space Mono,monospace;font-size:26px;font-weight:700;color:#e8d0f5;">2,233</div><div style="font-size:10px;color:#8060a0;letter-spacing:1px;text-transform:uppercase;">Unique Ingredients</div></div>
+      <div style="text-align:center;"><div style="font-family:Space Mono,monospace;font-size:26px;font-weight:700;color:#f4c2ce;">53</div><div style="font-size:10px;color:#8060a0;letter-spacing:1px;text-transform:uppercase;">Brands</div></div>
+      <div style="text-align:center;"><div style="font-family:Space Mono,monospace;font-size:26px;font-weight:700;color:#c9a0dc;">Sephora</div><div style="font-size:10px;color:#8060a0;letter-spacing:1px;text-transform:uppercase;">Data Source</div></div>
+    </div>
+    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:28px;">
+      <div style="padding:6px 14px;background:rgba(201,160,220,0.1);border:1px solid rgba(201,160,220,0.3);border-radius:20px;font-size:11px;color:#c9a0dc;">Ingredient Similarity Map</div>
+      <div style="padding:6px 14px;background:rgba(201,160,220,0.1);border:1px solid rgba(201,160,220,0.3);border-radius:20px;font-size:11px;color:#c9a0dc;">Product Clustering</div>
+      <div style="padding:6px 14px;background:rgba(201,160,220,0.1);border:1px solid rgba(201,160,220,0.3);border-radius:20px;font-size:11px;color:#c9a0dc;">Skin-Type Filtering</div>
+      <div style="padding:6px 14px;background:rgba(232,208,245,0.1);border:1px solid rgba(232,208,245,0.3);border-radius:20px;font-size:11px;color:#e8d0f5;">Budget Finder</div>
+      <div style="padding:6px 14px;background:rgba(232,208,245,0.1);border:1px solid rgba(232,208,245,0.3);border-radius:20px;font-size:11px;color:#e8d0f5;">Recommendation Engine</div>
+      <div style="padding:6px 14px;background:rgba(244,194,206,0.1);border:1px solid rgba(244,194,206,0.3);border-radius:20px;font-size:11px;color:#f4c2ce;">Ingredient Comparison</div>
+      <div style="padding:6px 14px;background:rgba(244,194,206,0.1);border:1px solid rgba(244,194,206,0.3);border-radius:20px;font-size:11px;color:#f4c2ce;">Dupes Finder</div>
+    </div>
+    <div style="background:rgba(201,160,220,0.06);border:1px solid rgba(201,160,220,0.2);border-radius:12px;padding:20px 24px;">
+      <div style="font-size:10px;letter-spacing:2px;color:#c9a0dc;font-family:Space Mono,monospace;margin-bottom:12px;text-transform:uppercase;">How to Read the Map</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:10px;height:10px;border-radius:50%;background:#c9a0dc;flex-shrink:0;margin-top:3px;"></div><div style="font-size:12px;color:#8060a0;line-height:1.5;"><span style="color:#f0e0ff;font-weight:600;">Each dot = 1 product</span><br>190 moisturizers plotted on the map</div></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:10px;height:10px;border-radius:50%;background:#e8d0f5;flex-shrink:0;margin-top:3px;"></div><div style="font-size:12px;color:#8060a0;line-height:1.5;"><span style="color:#f0e0ff;font-weight:600;">Closer dots = similar ingredients</span><br>Products near each other share more ingredients</div></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:10px;height:10px;border-radius:50%;background:#f4c2ce;flex-shrink:0;margin-top:3px;"></div><div style="font-size:12px;color:#8060a0;line-height:1.5;"><span style="color:#f0e0ff;font-weight:600;">Color = Brand</span><br>Each brand has a unique color. Click any dot for details</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="position:relative;z-index:1;background:#1e1228;padding:28px 40px;border-bottom:1px solid rgba(201,160,220,0.15);">
+  <div style="max-width:900px;margin:0 auto;">
+    <div style="font-size:10px;letter-spacing:2px;color:#c9a0dc;font-family:Space Mono,monospace;margin-bottom:16px;text-transform:uppercase;">Key Insights from the Data</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+      <div style="background:var(--bg3);border:1px solid rgba(201,160,220,0.15);border-radius:10px;padding:16px;"><div style="font-size:20px;margin-bottom:8px;">&#128269;</div><div style="font-size:12px;font-weight:700;color:#f0e0ff;margin-bottom:4px;">Brand Clustering</div><div style="font-size:12px;color:#8060a0;line-height:1.6;">Products from the same brand cluster together showing consistent formulation strategies</div></div>
+      <div style="background:var(--bg3);border:1px solid rgba(201,160,220,0.15);border-radius:10px;padding:16px;"><div style="font-size:20px;margin-bottom:8px;">&#128176;</div><div style="font-size:12px;font-weight:700;color:#f0e0ff;margin-bottom:4px;">Price vs Ingredients</div><div style="font-size:12px;color:#8060a0;line-height:1.6;">Some expensive products share nearly identical ingredients with cheaper alternatives</div></div>
+      <div style="background:var(--bg3);border:1px solid rgba(201,160,220,0.15);border-radius:10px;padding:16px;"><div style="font-size:20px;margin-bottom:8px;">&#128167;</div><div style="font-size:12px;font-weight:700;color:#f0e0ff;margin-bottom:4px;">Dominant Ingredients</div><div style="font-size:12px;color:#8060a0;line-height:1.6;">Water and Glycerin appear in 90%+ of products as the most common base ingredients</div></div>
+      <div style="background:var(--bg3);border:1px solid rgba(201,160,220,0.15);border-radius:10px;padding:16px;"><div style="font-size:20px;margin-bottom:8px;">&#129526;</div><div style="font-size:12px;font-weight:700;color:#f0e0ff;margin-bottom:4px;">Real World Impact</div><div style="font-size:12px;color:#8060a0;line-height:1.6;">Helps people with sensitive skin avoid harmful ingredients and find affordable alternatives</div></div>
+    </div>
+  </div>
+</div>
 <canvas id="spark" style="position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.3;"></canvas>
 <header>
   <div class="logo">
-    <div class="li">CA</div>
-    <div class="lt">Chemical Analytic <span>Lab</span></div>
+    <div class="li">GG</div>
+    <div class="lt">Glow<span>Guide</span></div>
   </div>
   <div class="hs">
     <div class="h"><div class="hn" id="tc">190</div><div class="hl">Products</div></div>
@@ -142,7 +184,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
   </div>
   <div class="cp">
     <div class="vt">
-      <span class="vl">t-SNE - Ingredient Similarity Map</span>
+      <span class="vl">t-SNE - Ingredient Similarity Map &nbsp;|&nbsp; <span style="font-size:10px;color:#604080;">X axis = t-SNE 1 &nbsp; Y axis = t-SNE 2 &nbsp; (axes have no direct meaning - only distances matter)</span></span>
       <button class="vb on" onclick="sm(this,'s')">Scatter</button>
       <button class="vb" onclick="sm(this,'d')">Density</button>
       <button class="vb" onclick="rv()">Reset</button>
@@ -200,7 +242,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
 
 <div class="sec" style="background:#130d1a;">
   <div class="sh"><span style="color:#c9a0dc;">// INGREDIENT COMPARISON</span><div></div></div>
-  <div style="margin-bottom:16px;font-size:11px;color:#8060a0;">Click any dot on the map to select Product 1, then click another for Product 2</div>
+  <div style="margin-bottom:16px;font-size:11px;color:#8060a0;">Select any two products from the map below to compare their ingredients side by side. Shared ingredients are highlighted in purple.</div>
   <div style="display:grid;grid-template-columns:1fr 80px 1fr;gap:16px;align-items:start;">
     
     <!-- Product 1 -->
@@ -276,46 +318,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
   </div>
 </div>
 
-
-<div class="sec" style="background:#130d1a;">
-  <div class="sh"><span style="color:#f4c2ce;">// BUDGET FINDER</span><div style="background:rgba(244,194,206,0.1);"></div></div>
-  <div style="font-size:11px;color:#8060a0;margin-bottom:20px;">Find the best products within your budget ranked by beneficial ingredients</div>
-  
-  <div style="display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:start;">
-    
-    <!-- Controls -->
-    <div class="cd">
-      <div class="ct">Set Your Budget</div>
-      <div style="font-size:28px;font-weight:700;color:#f4c2ce;font-family:Space Mono,monospace;text-align:center;margin:16px 0;" id="bfAmount">$50</div>
-      <input type="range" id="bfSlider" min="10" max="300" value="50" step="5" oninput="updateBF(this)"
-        style="width:100%;margin-bottom:8px;background:linear-gradient(to right,#f4c2ce 0%,#f4c2ce 14%,#261530 14%);">
-      <div style="display:flex;justify-content:space-between;font-size:10px;color:#8060a0;margin-bottom:16px;">
-        <span>$10</span><span>$300</span>
-      </div>
-      <div style="font-size:10px;color:#8060a0;margin-bottom:8px;">SKIN CONCERN</div>
-      <div id="bfConcerns" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;">
-        <div class="rc" onclick="togBF(this,'dryness')">Dryness</div>
-        <div class="rc" onclick="togBF(this,'aging')">Aging</div>
-        <div class="rc" onclick="togBF(this,'oily')">Oily</div>
-        <div class="rc" onclick="togBF(this,'sensitive')">Sensitive</div>
-        <div class="rc" onclick="togBF(this,'brightening')">Brightening</div>
-      </div>
-      <div style="text-align:center;padding:12px;background:rgba(244,194,206,0.08);border-radius:8px;">
-        <div style="font-size:11px;color:#8060a0;">Products in budget</div>
-        <div style="font-size:24px;font-weight:700;color:#f4c2ce;font-family:Space Mono,monospace;" id="bfCount">0</div>
-      </div>
-    </div>
-
-    <!-- Results -->
-    <div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;" id="bfResults">
-        <div style="color:#8060a0;font-size:11px;text-align:center;padding:40px;grid-column:1/-1;">Move the slider to find products!</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
 <div class="sec" style="background:#1e1228;">
   <div class="sh"><span style="color:#f4c2ce;">// RECOMMENDATION ENGINE</span><div style="background:rgba(244,194,206,0.1);"></div></div>
   <div class="g2">
@@ -348,7 +350,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
 </div>
 <div class="bb">
   <div class="dot"></div>
-  <span style="color:var(--ac);">CHEM ANALYTIC LAB</span>
+  <span style="color:var(--ac);">GLOWGUIDE</span>
   <span>Sephora - 190 Moisturizers - Dry Skin</span>
   <span style="margin-left:auto">Visible: <span style="color:var(--ac);" id="fv">190</span></span>
 </div>
@@ -867,86 +869,80 @@ function renderBF(budget) {
 renderBF(50);
 </script>
 
-<script>
-var bfConcerns = {};
+<div class="sec" style="background:#1e1228;">
+  <div class="sh"><span style="color:#c9a0dc;">// TECH STACK & METHODOLOGY</span><div></div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    
+    <!-- Tech Stack -->
+    <div class="cd">
+      <div class="ct">Tech Stack</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:12px;padding:10px;background:#130d1a;border-radius:8px;border:1px solid rgba(201,160,220,0.1);">
+          <div style="width:8px;height:8px;border-radius:50%;background:#c9a0dc;flex-shrink:0;"></div>
+          <div><div style="font-size:12px;color:#f0e0ff;font-weight:600;">Python</div><div style="font-size:10px;color:#8060a0;">Core programming language</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px;background:#130d1a;border-radius:8px;border:1px solid rgba(201,160,220,0.1);">
+          <div style="width:8px;height:8px;border-radius:50%;background:#e8d0f5;flex-shrink:0;"></div>
+          <div><div style="font-size:12px;color:#f0e0ff;font-weight:600;">Pandas & NumPy</div><div style="font-size:10px;color:#8060a0;">Data manipulation & matrix operations</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px;background:#130d1a;border-radius:8px;border:1px solid rgba(201,160,220,0.1);">
+          <div style="width:8px;height:8px;border-radius:50%;background:#f4c2ce;flex-shrink:0;"></div>
+          <div><div style="font-size:12px;color:#f0e0ff;font-weight:600;">Scikit-learn</div><div style="font-size:10px;color:#8060a0;">t-SNE dimensionality reduction & cosine similarity</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px;background:#130d1a;border-radius:8px;border:1px solid rgba(201,160,220,0.1);">
+          <div style="width:8px;height:8px;border-radius:50%;background:#c9a0dc;flex-shrink:0;"></div>
+          <div><div style="font-size:12px;color:#f0e0ff;font-weight:600;">NLP - Tokenization</div><div style="font-size:10px;color:#8060a0;">Ingredient list processing & bag of words</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px;background:#130d1a;border-radius:8px;border:1px solid rgba(201,160,220,0.1);">
+          <div style="width:8px;height:8px;border-radius:50%;background:#e8d0f5;flex-shrink:0;"></div>
+          <div><div style="font-size:12px;color:#f0e0ff;font-weight:600;">Chart.js</div><div style="font-size:10px;color:#8060a0;">Interactive data visualizations</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px;background:#130d1a;border-radius:8px;border:1px solid rgba(201,160,220,0.1);">
+          <div style="width:8px;height:8px;border-radius:50%;background:#f4c2ce;flex-shrink:0;"></div>
+          <div><div style="font-size:12px;color:#f0e0ff;font-weight:600;">GitHub Pages</div><div style="font-size:10px;color:#8060a0;">Live deployment</div></div>
+        </div>
+      </div>
+    </div>
 
-function updateBF(el) {
-  var val = parseInt(el.value);
-  var pct = (val-10)/290*100;
-  el.style.background = "linear-gradient(to right,#f4c2ce 0%,#f4c2ce "+pct+"%,#261530 "+pct+"%)";
-  document.getElementById("bfAmount").textContent = "$"+val;
-  renderBF(val);
-}
+    <!-- Methodology -->
+    <div class="cd">
+      <div class="ct">Methodology</div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(201,160,220,0.15);border:1px solid #c9a0dc;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#c9a0dc;flex-shrink:0;">1</div>
+          <div><div style="font-size:12px;font-weight:700;color:#f0e0ff;margin-bottom:3px;">Ingredient Tokenization</div><div style="font-size:11px;color:#8060a0;line-height:1.5;">Ingredient lists are split into tokens and stored in a vocabulary dictionary of 2,233 unique ingredients</div></div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(201,160,220,0.15);border:1px solid #c9a0dc;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#c9a0dc;flex-shrink:0;">2</div>
+          <div><div style="font-size:12px;font-weight:700;color:#f0e0ff;margin-bottom:3px;">Document-Term Matrix</div><div style="font-size:11px;color:#8060a0;line-height:1.5;">Each product is represented as a binary vector (190 x 2,233 matrix) where 1 = ingredient present</div></div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(201,160,220,0.15);border:1px solid #c9a0dc;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#c9a0dc;flex-shrink:0;">3</div>
+          <div><div style="font-size:12px;font-weight:700;color:#f0e0ff;margin-bottom:3px;">t-SNE Dimensionality Reduction</div><div style="font-size:11px;color:#8060a0;line-height:1.5;">t-SNE reduces the 2,233-dimensional matrix to 2D while preserving ingredient similarity relationships</div></div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(201,160,220,0.15);border:1px solid #c9a0dc;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#c9a0dc;flex-shrink:0;">4</div>
+          <div><div style="font-size:12px;font-weight:700;color:#f0e0ff;margin-bottom:3px;">Cosine Similarity Recommendations</div><div style="font-size:11px;color:#8060a0;line-height:1.5;">Recommendations are based on cosine similarity between ingredient vectors &#8212; products with higher similarity scores share more ingredients</div></div>
+        </div>
+      </div>
+    </div>
 
-function togBF(el, c) {
-  if(bfConcerns[c]) { delete bfConcerns[c]; el.classList.remove("on"); }
-  else { bfConcerns[c] = 1; el.classList.add("on"); }
-  var val = parseInt(document.getElementById("bfSlider").value);
-  renderBF(val);
-}
+  </div>
+</div>
 
-function renderBF(budget) {
-  var concern_ings = {
-    dryness: ["glycerin","hyaluronic acid","squalane","ceramide"],
-    aging: ["retinol","peptide","collagen","niacinamide","vitamin c"],
-    oily: ["salicylic acid","zinc","niacinamide"],
-    sensitive: ["aloe","ceramide","oat","allantoin"],
-    brightening: ["vitamin c","niacinamide","glycolic"]
-  };
-  
-  var ti = [];
-  var cs = Object.keys(bfConcerns);
-  for(var i=0;i<cs.length;i++) {
-    var ings = concern_ings[cs[i]];
-    if(ings) for(var j=0;j<ings.length;j++) ti.push(ings[j]);
-  }
-  
-  var filtered = P.filter(function(p){ return p.Price <= budget; });
-  document.getElementById("bfCount").textContent = filtered.length;
-  
-  var scored = filtered.map(function(p) {
-    var il = p.Ingredients.toLowerCase();
-    var s = 0;
-    for(var i=0;i<ti.length;i++) { if(il.indexOf(ti[i])>=0) s++; }
-    return {p:p, s:s};
-  });
-  
-  if(ti.length > 0) {
-    scored.sort(function(a,b){ return b.s-a.s||b.p.Rank-a.p.Rank; });
-  } else {
-    scored.sort(function(a,b){ return b.p.Rank-a.p.Rank; });
-  }
-  
-  scored = scored.slice(0,6);
-  
-  if(scored.length === 0) {
-    document.getElementById("bfResults").innerHTML = "<div style=\"color:#8060a0;font-size:11px;text-align:center;padding:40px;grid-column:1/-1;\">No products found under $"+budget+"</div>";
-    return;
-  }
-  
-  var html = "";
-  for(var i=0;i<scored.length;i++) {
-    var item = scored[i];
-    var stars = "";
-    for(var j=0;j<5;j++) {
-      stars += "<span style=\"color:"+(j<Math.round(item.p.Rank)?"#f4c2ce":"#261530")+";\">&#9733;</span>";
-    }
-    html += "<div style=\"background:var(--bg3);border:1px solid rgba(244,194,206,0.15);border-radius:10px;padding:14px;position:relative;\">";
-    html += "<div style=\"position:absolute;top:10px;right:10px;font-family:Space Mono,monospace;font-size:14px;font-weight:700;color:#f4c2ce;\">#"+(i+1)+"</div>";
-    html += "<div style=\"font-size:9px;color:#f4c2ce;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;\">"+item.p.Brand+"</div>";
-    html += "<div style=\"font-size:12px;font-weight:700;color:#f0e0ff;margin-bottom:6px;line-height:1.3;\">"+(item.p.Name.length>40?item.p.Name.slice(0,40)+"...":item.p.Name)+"</div>";
-    html += "<div style=\"font-size:11px;color:#f4c2ce;font-family:Space Mono,monospace;margin-bottom:6px;\">"+"$"+item.p.Price+"</div>";
-    html += "<div style=\"margin-bottom:8px;\">"+stars+"</div>";
-    if(ti.length > 0 && item.s > 0) {
-      html += "<div style=\"font-size:9px;color:#8060a0;\">"+item.s+" ingredient matches</div>";
-    }
-    html += "</div>";
-  }
-  document.getElementById("bfResults").innerHTML = html;
-}
 
-// Initialize
-renderBF(50);
-</script>
-</body>
-</html>
+
+
+
+
+
+<div style="position:relative;z-index:1;background:#130d1a;border-top:1px solid rgba(201,160,220,0.15);padding:24px;text-align:center;">
+  <div style="font-family:Cormorant Garamond,serif;font-size:18px;color:#c9a0dc;margin-bottom:4px;">GlowGuide</div>
+  <div style="font-size:11px;color:#8060a0;margin-bottom:8px;">Ingredient-Based Skincare Recommender</div>
+  <div style="font-size:11px;color:#8060a0;">
+    Developed by <span style="color:#e8d0f5;font-weight:600;">Aiswarya A</span>
+    &nbsp;&middot;&nbsp;
+    <a href="https://github.com/Aiswarya0109" target="_blank" style="color:#f4c2ce;text-decoration:none;">GitHub</a>
+    
+  </div>
+</div></body></html>
